@@ -23,6 +23,15 @@ export default function Login({ history }) {
       password: password,
     };
 
+    if (user.length < 4 || password.length < 4) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Os campos devem ter pelo menos 3 caractéres!",
+      });
+      return
+    }
+
     if (user !== "" && password !== "") {
       if (checked) {
         if (password === passwordConfirm) {
@@ -36,10 +45,12 @@ export default function Login({ history }) {
               async (response) => {
                 localStorage.setItem("id", response.data.id);
                 localStorage.setItem("token", response.data.token);
-                const name = await axios.get("https://reqres.in/api/users/" + response.data.id)
-                localStorage.setItem('name', name.data.first_name)
-                localStorage.setItem('lastName', name.data.last_name)
-                history.push('/main')
+                const name = await axios.get(
+                  "https://reqres.in/api/users/" + response.data.id
+                );
+                localStorage.setItem("name", name.data.first_name);
+                localStorage.setItem("lastName", name.data.last_name);
+                history.push("/main");
               },
               (error) => {
                 Swal.fire({
@@ -66,7 +77,7 @@ export default function Login({ history }) {
           .then(
             (response) => {
               localStorage.setItem("token", response.data.token);
-              history.push('/main')
+              history.push("/main");
             },
             (error) => {
               Swal.fire({
